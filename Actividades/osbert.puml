@@ -1,0 +1,10 @@
+@startuml
+    left to right direction
+    actor Osbert
+    actor Cliente
+    rectangle Compra{
+        Cliente -- (Compra)
+        (Vender) -- Osbert
+        (Reportes) -- Osbert
+    }
+@enduml
