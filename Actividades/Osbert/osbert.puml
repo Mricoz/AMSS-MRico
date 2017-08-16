@@ -6,5 +6,6 @@
         Cliente -- (Compra)
         (Vender) -- Osbert
         (Reportes) -- Osbert
+        Cliente -- (Reportes)
     }
 @enduml
