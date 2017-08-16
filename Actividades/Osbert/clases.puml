@@ -1,3 +1,36 @@
 @startuml
-    
+  Class Cuadro{
+    + String artista
+    + Int precio
+    + String tipo
+    + String descripcion
+
+    Cuadro()
+  }
+  Class Venta{
+    Int precio
+    Date fecha
+    Vendedor vendedor
+
+    Venta()
+  }
+  Class Vendedor{
+    String nombre
+    String direccion
+
+    Aceptar()
+    Rechazar()
+    Vendedor()
+  }
+  Class Comprador{
+    String nombre
+    String direccion
+
+    Comprador()
+  }
+
+  Vendedor --> Venta :realiza
+  Comprador --> Cuadro :compra
+  Cuadro --> Venta :pertenece
+
 @enduml
