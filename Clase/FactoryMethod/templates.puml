@@ -1,0 +1,13 @@
+@startuml
+    Class FactoryProduct{
+        template <class Prod>
+        +Prod* factoryMethod()
+    }
+
+    Class ProductA{
+        +operation()
+    }
+
+    FactoryProduct --> ProductA
+    ProductA --|> FactoryProduct
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+    Class Product{
+        +Operation()
+        +Operation2()
+    }
+    Class Creator{
+        -virtual Product* createProduct()
+        +Product* factoryMethod()
+    }
+    Class CreatorA{
+        +Product* createProduct()
+    }
+
+    Creator <|-- CreatorA
+    CreatorA -- Product
+@enduml
