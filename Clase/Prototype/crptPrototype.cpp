@@ -23,13 +23,22 @@ public:
     Mundo* mundo;
     // Funciones
     virtual Personaje* clone() = 0;
-
 };
 
-class Princesa : public Personaje {
+template <class SubClase>
+class ClonPersonaje : public Personaje{
+public:
+    Personaje* clone(){
+        return new SubClase(dynamic_cast <SubClase&>(*this));
+    }
+};
+
+class Princesa : public ClonPersonaje<Princesa> {
 public:
     // Constructor
-    Princesa(string n) : Personaje(n){}
+    Princesa(string n){
+        nombre = n;
+    }
     Princesa(const Princesa& p){
         nombre = p.nombre;
         telefono = p.telefono;
@@ -38,15 +47,14 @@ public:
     }
     // Funciones
     void grita() { cout << "aaaaaa" << endl;}
-    Personaje* clone(){
-        return new Princesa(*this);
-    }
 };
 
-class Villano : public Personaje {
+class Villano : public ClonPersonaje<Villano> {
 public:
     // Constructor
-    Villano(string n) : Personaje(n){}
+    Villano(string n){
+        nombre = n;
+    }
     Villano(const Villano& p){
         nombre = p.nombre;
         telefono = p.telefono;
@@ -55,15 +63,14 @@ public:
     }
     // Funciones
     void secuestra() { cout << "te atrape!" << endl;}
-    Personaje* clone(){
-        return new Villano(*this);
-    }
 };
 
-class Heroe : public Personaje {
+class Heroe : public ClonPersonaje<Heroe> {
 public:
     // Constructor
-    Heroe(string n) : Personaje(n){}
+    Heroe(string n){
+        nombre = n;
+    }
     Heroe(const Heroe& p){
         nombre = p.nombre;
         telefono = p.telefono;
@@ -72,9 +79,6 @@ public:
     }
     // Funciones
     void salvar() { cout << "yo te rescatare!" << endl;}
-    Personaje* clone(){
-        return new Heroe(*this);
-    }
 };
 
 int main(){
@@ -83,8 +87,22 @@ int main(){
     pri -> telefono = 55293;
     pri -> mundo = new Mundo("Paleta");
     Princesa* p = dynamic_cast<Princesa*> (pri -> clone());
+    pri -> nombre = "RAPUNZEL";
+    pri -> mundo -> nombreMundo = "Paleton";
+    cout << pri -> nombre << endl;
+    cout << pri -> correo << endl;
+    cout << pri -> telefono << endl;
+    cout << pri -> mundo -> nombreMundo << endl;
     cout << p -> nombre << endl;
     cout << p -> correo << endl;
     cout << p -> telefono << endl;
     cout << p -> mundo -> nombreMundo << endl;
+
+    Princesa* pp = dynamic_cast<Princesa*> (p -> clone());
+    pp -> mundo -> nombreMundo = "Paletita";
+    cout << pp -> nombre << endl;
+    cout << pp -> correo << endl;
+    cout << pp -> telefono << endl;
+    cout << pp -> mundo -> nombreMundo << endl;
+
 }
