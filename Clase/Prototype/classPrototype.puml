@@ -34,4 +34,5 @@
 Personaje <|.. Princesa
 Personaje <|.. Villano
 Personaje <|.. Heroe
+Mundo *-- Personaje
 @enduml

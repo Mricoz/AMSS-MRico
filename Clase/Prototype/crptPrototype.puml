@@ -35,4 +35,5 @@ ClonPersonaje <|-- Princesa
 ClonPersonaje <|-- Villano
 ClonPersonaje <|-- Heroe
 Personaje <|.. ClonPersonaje
+Mundo *-- Personaje
 @enduml
