@@ -1,0 +1,42 @@
+@startuml
+    Class Computadora{
+        template <class Comp>
+        +Comp* nuevaComp()
+        +seleccionComponentes()
+        +ensambladoComponentes()
+        +instalConfigSoftware()
+        +empaquetadoComp()
+    }
+
+    Class Desktop{
+        +tipoComp()
+    }
+    Class Laptop{
+        +tipoComp()
+    }
+    Class Netbook{
+        +tipoComp()
+    }
+    Class Tablet{
+        +tipoComp()
+    }
+    Class ServerRack{
+        +tipoComp()
+    }
+    Class ServerTower{
+        +tipoComp()
+    }
+
+    Computadora --> Desktop
+    Computadora --> Laptop
+    Computadora --> Netbook
+    Computadora --> Tablet
+    Computadora --> ServerRack
+    Computadora --> ServerTower
+    Desktop --|> Computadora
+    Laptop --|> Computadora
+    Netbook --|> Computadora
+    Tablet --|> Computadora
+    ServerRack --|> Computadora
+    ServerTower --|> Computadora
+@enduml
