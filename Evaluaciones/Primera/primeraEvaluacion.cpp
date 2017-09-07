@@ -33,45 +33,63 @@ public:
 };
 // Desktop class
 class Desktop : public Computadora{
+    friend class Computadora;
 public:
     void tipoComp(){
         cout << "HAZ CREADO UNA DESKTOP" << endl;
     }
+private:
+    Desktop():Computadora(){}
 };
 // Laptop class
 class Laptop : public Computadora {
+    friend class Computadora;
 public:
     void tipoComp(){
         cout << "HAZ CREADO UNA LAPTOP" << endl;
     }
+private:
+    Laptop():Computadora(){}
 };
 // Netbook class
 class Netbook : public Computadora {
+    friend class Computadora;
 public:
     void tipoComp(){
         cout << "HAZ CREADO UNA NETBOOK" << endl;
     }
+private:
+    Netbook():Computadora(){}
 };
 // Tablet class
 class Tablet : public Computadora{
+    friend class Computadora;
 public:
     void tipoComp(){
         cout << "HAZ CREADO UNA TABLET" << endl;
     }
+private:
+    Tablet():Computadora(){}
 };
 // ServerRack class
 class ServerRack : public Computadora {
+    friend class Computadora;
 public:
     void tipoComp(){
         cout << "HAZ CREADO UNA SERVER RACK" << endl;
     }
+private:
+    ServerRack():Computadora(){}
 };
 // ServerTower class
 class ServerTower : public Computadora {
+    friend class Computadora;
 public:
     void tipoComp(){
         cout << "HAZ CREADO UNA SERVER TOWER" << endl;
     }
+private:
+    ServerTower():Computadora(){}
 };
 // main
 int main(){
