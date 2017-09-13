@@ -59,15 +59,28 @@ Iterator<I>* Collection<I>::getIterator(){
     return new Iterator<I>(*this);
 }
 
-int main(){
-    Collection<string> i;
-    i.addElement("lo");
-    i.addElement("que");
-    i.addElement("sea");
-    i.addElement("lol");
-    Iterator<string>* it = i.getIterator();
+template<class C, class Function>
+void find_if(Collection<C> coll, Function f){
+    Iterator<C>* it = coll.getIterator();
     while(it->hasNext()){
-        cout << it->next() << endl;
+        f(it->next());
     }
+}
+
+template<class C>
+void even(C n){
+    if (n % 2 == 0){
+        cout << n << endl;
+    }
+}
+
+int main(){
+    Collection<int> i;
+    i.addElement(45);
+    i.addElement(22);
+    i.addElement(4);
+    i.addElement(89);
+    Iterator<int>* it = i.getIterator();
+    find_if<int, void(*)(int)> (i, even);
     delete it;
 }
