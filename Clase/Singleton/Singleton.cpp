@@ -2,10 +2,9 @@
 using namespace std;
 
 class Singleton {
-private:
-  // Constructor
-  Singleton() = default;
 public:
+    // Constructor
+    Singleton() = default;
   // Funciones
   static Singleton* getInstance(){
     if(!instance){
