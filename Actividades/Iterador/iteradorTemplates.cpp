@@ -23,7 +23,7 @@ public:
         array = new C[10];
         cont = 0;
     }
-    void addElement(C value){
+    void addPlayer(C value){
         if(cont <= size){
             array[cont++] = value;
             return;
@@ -54,6 +54,7 @@ public:
         return coll.at(cont++);
     }
 };
+
 template<class I>
 Iterator<I>* Collection<I>::getIterator(){
     return new Iterator<I>(*this);

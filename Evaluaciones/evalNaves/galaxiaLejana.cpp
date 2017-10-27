@@ -6,11 +6,10 @@
 */
 #include <iostream>
 #import <string>
-#import <vector>
 #import <stdlib.h>
 #import <time.h>
 
-#define SIZE 10 // constante de SIZE
+#define SIZE 30 // constante de SIZE
 
 using namespace std;
 
@@ -19,9 +18,7 @@ class Dios{
 protected:
     // Variables
     string type;
-    int posX;
-    int posY;
-    int id;
+    int posX, posY, id;
 public:
     // Funciones
     string getType(){
@@ -34,10 +31,7 @@ public:
         return posY;
     }
     int getID(){
-        return id;
-    }
-    void erase(){
-        id = 0;
+        return posY;
     }
     void setCoord(int x, int y){
       posX = x;
@@ -66,7 +60,7 @@ public:
         type = t;
         posX = rand() % 10; // Random pos
         posY = rand() % 10; // Random pos
-        cout << "Nave config" << endl;
+        // cout << "Nave config" << endl;
     }
 };
 // Singleton instance
@@ -87,9 +81,9 @@ public:
         value->setCoord(posX, posY);
     }
 };
-// Iterator
+// Iterador
 template<class I>
-class Iterator;
+class Iterador;
 // Collection class
 template<class C>
 class Collection{
@@ -98,13 +92,13 @@ protected:
     int size;
     int cont;
 public:
-    friend class Iterator<C>;
+    friend class Iterador<C>;
     Collection(){
         size = 10;
         array = new C[10];
         cont = 0;
     }
-    void addElement(C value){
+    void addPlayer(C value){
         if(cont <= size){
             array[cont++] = value;
             return;
@@ -112,19 +106,19 @@ public:
             cout << "ya no hay espacio para agregar elementos" << endl;
         }
     }
-    Iterator<C>* getIterator();
+    Iterador<C>* getIterador();
     C at(int pos){
         return array[pos];
     }
 };
-// Iterator class
+// Iterador class
 template <class I>
-class Iterator: public Tablero {
+class Iterador: public Tablero {
 protected:
     Collection<I> coll;
     int cont = 0;
 public:
-    Iterator(const Collection<I>& coll) : coll(coll){}
+    Iterador(const Collection<I>& coll) : coll(coll){}
     bool hasNext(){
         if(cont < coll.cont){
             return true;
@@ -136,19 +130,28 @@ public:
         return coll.at(cont++);
     }
 };
-// getIterator
+// getIterador
 template<class I>
-Iterator<I>* Collection<I>::getIterator(){
-    return new Iterator<I>(*this);
+Iterador<I>* Collection<I>::getIterador(){
+    return new Iterador<I>(*this);
 }
 // find_if function
-template<class C, class Function>
-void find_if(Collection<C> coll, Function f){
-    Iterator<C>* it = coll.getIterator();
-    while(it->hasNext()){
-        f(it->next());
+template<class C, class Function, class D >
+void find_if(Collection<C> coll, Function f, D secondPlay){
+  Iterador<C>* it = coll.getIterador();
+  while (it->hasNext())
+    f(it->next(), secondPlay);
+}
+// Funcion que compara coordenadas para la colision
+template<class C, class D>
+void crash(C firstPlay, D secondPlay){
+    if(firstPlay->getPosX() == secondPlay->getPosX()){
+        if(firstPlay->getPosY() == secondPlay->getPosY()){
+                cout << firstPlay->getType() << " just crashed with " << secondPlay->getType() << endl;
+        }
     }
 }
+typedef void(*func)(Dios *, Dios *);
 
 // Spacecraft class 1
 class SpacecraftExplore: public Galaxia<SpacecraftExplore>{
@@ -218,62 +221,70 @@ int main(int argr, char** argv){
 
     // Spacecraft 1
     SpacecraftExplore* explore = SpacecraftExplore::getInstance();
-    explore -> configElement("Planet exploration ships");
     // Spacecraft 2
     SpacecraftColo* colonize = SpacecraftColo::getInstance();
-    colonize -> configElement("Colonization ships");
     // Spacecraft 3
     SpacecraftObs* observe = SpacecraftObs::getInstance();
-    observe -> configElement("Planet observation ships");
     // Asteroid 1
     AsteroidStony* stony = AsteroidStony::getInstance();
-    stony -> configElement("Stony Meteorites");
     // Asteroid 2
     AsteroidIron* iron = AsteroidIron::getInstance();
-    iron -> configElement("Iron Meteorites");
     // Planet 1
     PlanetDesert* desert = PlanetDesert::getInstance();
-    desert -> configElement("Desert planet");
     // Planet 2
     PlanetEarth* earth = PlanetEarth::getInstance();
-    earth -> configElement("Earth analog");
-
+    // Configuracion de los elementos
+    explore->configElement("Planet exploration ships");
+    colonize->configElement("Colonization ships");
+    observe->configElement("Planet observation ships");
+    stony->configElement("Stony Meteorites");
+    iron->configElement("Iron Meteorites");
+    desert->configElement("Desert planet");
+    earth->configElement("Earth analog");
     // Tablero
     Tablero* juego = Tablero::getInstance();
-
-    col.addElement(explore);
-    col.addElement(colonize);
-    col.addElement(observe);
-    col.addElement(stony);
-    col.addElement(iron);
-    col.addElement(desert);
-    col.addElement(earth);
+    // se añaden elementos a collection
+    col.addPlayer(explore);
+    col.addPlayer(colonize);
+    col.addPlayer(observe);
+    col.addPlayer(stony);
+    col.addPlayer(iron);
+    col.addPlayer(desert);
+    col.addPlayer(earth);
 
     char answ = 'y';
     while(answ == 'y'){
         // Spacecraft 1
         juego->resetElement(explore->getPosX(), explore->getPosY());
-        juego->placeElement(rand() % 10, rand() % 10, explore->getID());
+        juego->placeElement(rand() % 10, rand() % 10, explore);
+        find_if<Dios*, func, Dios*> (col, crash, explore);
         // Spacecraft 2
         juego->resetElement(colonize->getPosX(), colonize->getPosY());
-        juego->placeElement(rand() % 10, rand() % 10, colonize->getID());
+        juego->placeElement(rand() % 10, rand() % 10, colonize);
+        find_if<Dios*, func, Dios*> (col, crash, colonize);
         // Spacecraft 3
         juego->resetElement(observe->getPosX(), observe->getPosY());
-        juego->placeElement(rand() % 10, rand() % 10, observe->getID());
+        juego->placeElement(rand() % 10, rand() % 10, observe);
+        find_if<Dios*, func, Dios*> (col, crash, observe);
         // Asteroid 1
         juego->resetElement(stony->getPosX(), stony->getPosY());
-        juego->placeElement(rand() % 10, rand() % 10, stony->getID());
+        juego->placeElement(rand() % 10, rand() % 10, stony);
+        find_if<Dios*, func, Dios*> (col, crash, stony);
         // Asteroid 2
         juego->resetElement(iron->getPosX(), iron->getPosY());
-        juego->placeElement(rand() % 10, rand() % 10, iron->getID());
+        juego->placeElement(rand() % 10, rand() % 10, iron);
+        find_if<Dios*, func, Dios*> (col, crash, iron);
         // Planet 1
         juego->resetElement(desert->getPosX(), desert->getPosY());
-        juego->placeElement(rand() % 10, rand() % 10, desert->getID());
+        juego->placeElement(rand() % 10, rand() % 10, desert);
+        find_if<Dios*, func, Dios*> (col, crash, desert);
         // Planet 2
         juego->resetElement(earth->getPosX(), earth->getPosY());
-        juego->placeElement(rand() % 10, rand() % 10, earth->getID());
+        juego->placeElement(rand() % 10, rand() % 10, earth);
+        find_if<Dios*, func, Dios*> (col, crash, earth);
 
         cout << "Repetir? (y/n)" << endl;
         cin >> answ;
     }
+    return 0;
 }
